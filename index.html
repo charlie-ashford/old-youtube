@@ -693,7 +693,7 @@
                 rating
             )}</span>
             </div>
-            <div class="date-added">Joined: ${formatDate(creationDate)}</div>
+            <div class="date-added">Added: ${formatDate(creationDate)}</div>
         `;
 
             container.appendChild(channelBox);
@@ -982,6 +982,13 @@
             closeSubmissionModal();
         }
     };
+
+    window.onclick = function (event) {
+        const modal = document.getElementById('channel-modal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
 </script>
 </body>
 
