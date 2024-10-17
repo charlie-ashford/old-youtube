@@ -489,7 +489,15 @@
     }
 
     function formatSubscriberCount(count) {
-        return parseInt(count).toLocaleString();
+        return parseInt(count).toLocaleString('en-US');
+    }
+
+    function formatTotalViews(totalViews) {
+        return parseInt(totalViews).toLocaleString('en-US');
+    }
+
+    function formatVideoCount(videoCount) {
+        return parseInt(videoCount).toLocaleString('en-US');
     }
 
     function formatDate(dateString) {
@@ -529,7 +537,7 @@
             const responseData2 = await fetch('https://api.communitrics.com/api/all');
             const data2 = await responseData2.json();
 
-            updateChannelCount(data2.channels.length.toLocaleString());
+            updateChannelCount(data2.channels.length.toLocaleString('en-US'));
 
         } catch (error) {
             console.error('Error fetching data2:', error);
@@ -581,6 +589,9 @@
             const subscriberCount = formatSubscriberCount(
                 channel.apiData?.statistics?.subscriberCount || '0'
             );
+            const videoCount = formatVideoCount(
+                channel.apiData?.statistics?.videoCount || '0'
+            );
             const creationDate = formatDate(
                 channel.apiData?.snippet?.publishedAt || channel.publishedAt
             );
@@ -595,7 +606,7 @@
             <div class="channel-title">${channel.title}</div>
             <div class="channel-stats">
                 ${subscriberCount} subscribers<br>
-                ${channel.apiData?.statistics?.videoCount || 'N/A'} videos
+                ${videoCount} videos
             </div>
             <div class="rating">
                 Rating: ${formattedRating} <span class="stars">${generateStars(
@@ -622,6 +633,12 @@
         const subscriberCount = formatSubscriberCount(
             channel.apiData?.statistics?.subscriberCount || '0'
         );
+        const totalViews = formatTotalViews(
+            channel.apiData?.statistics?.viewCount || '0'
+        );
+        const videoCount = formatVideoCount(
+            channel.apiData?.statistics?.videoCount || '0'
+        );
         const creationDate = formatDate(
             channel.apiData?.snippet?.publishedAt || channel.publishedAt
         );
@@ -635,10 +652,10 @@
             }" alt="${channel.title}">
             <div class="modal-header-content">
                 <h2><a href="${channelUrl}" target="_blank">${channel.title
-            }</a></h2>  <!-- Channel name is now clickable -->
+            }</a></h2> 
                 <p>Subscribers: ${subscriberCount}</p>
-                <p>Videos: ${channel.apiData?.statistics?.videoCount || 'N/A'
-            }</p>
+                <p>Total Views: ${totalViews}</p> 
+                <p>Videos: ${videoCount}</p>
                 <p>Created: ${creationDate}</p>
             </div>
         </div>
@@ -823,7 +840,7 @@
 
     document
         .getElementById('search-input')
-        .addEventListener('input', debounce(searchChannels, 300));
+        .addEventListener('input', debounce(searchChannels, 250));
 
     function debounce(func, delay) {
         let debounceTimer;
