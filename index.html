@@ -99,6 +99,27 @@
             border-bottom: 4px solid transparent;
         }
 
+        #search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #download-csv-button {
+            padding: 8px 16px;
+            background-color: #03c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        #download-csv-button:hover {
+            background-color: #025aa5;
+        }
+
         #main-content {
             width: 90%;
             max-width: 1040px;
@@ -400,9 +421,12 @@
 </body>
 
 <div id="main-content">
-    <input type="text" id="search-input" placeholder="Search channels..." oninput="searchChannels()" />
-    <div id="channels-container" class="channels-grid"></div>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search channels..." oninput="searchChannels()" />
+        <button id="download-csv" onclick="downloadCSV()">Download CSV</button>
+    </div>
 
+    <div id="channels-container" class="channels-grid"></div>
     <div id="pagination">Loading pages...</div>
 </div>
 
@@ -720,6 +744,36 @@
     function closeModal() {
         const modal = document.getElementById('channel-modal');
         modal.style.display = 'none';
+    }
+
+    async function downloadCSV() {
+        try {
+            const response = await fetch('https://api.communitrics.com/api/all');
+            const data = await response.json();
+            const channels = data.channels;
+
+            const csvData = channels.map(channel => {
+                return Object.values(channel).map(value => `"${value}"`).join(',');
+            });
+
+            const csvContent = [
+                Object.keys(channels[0]).join(','),
+                ...csvData
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'channels.csv';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading CSV:', error);
+        }
     }
 
     window.onclick = function (event) {
