@@ -175,6 +175,7 @@
 
         .rating {
             color: #666;
+            font-size: 12px;
             margin-top: 3px;
         }
 
@@ -286,6 +287,12 @@
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 10px;
             margin-top: 15px;
+        }
+
+        .video-date {
+            color: #666;
+            font-size: 12px;
+            margin-top: 3px;
         }
 
         .video-item {
@@ -527,7 +534,6 @@
             fetchData2();
 
         } catch (error) {
-            console.error('Error:', error);
             container.innerHTML = '<div class="loading">Error loading channels</div>';
         }
     }
@@ -540,7 +546,6 @@
             updateChannelCount(data2.channels.length.toLocaleString('en-US'));
 
         } catch (error) {
-            console.error('Error fetching data2:', error);
         }
     }
 
@@ -559,15 +564,11 @@
 
         imgElement.onerror = () => {
             if (retries > 0) {
-                console.log(
-                    `Retrying image load: ${url}, attempts remaining: ${retries}`
-                );
                 setTimeout(
                     () => loadImageWithRetry(imgElement, url, retries - 1),
                     10000
                 );
             } else {
-                console.error(`Failed to load image: ${url}`);
                 imgElement.src = channel.profilePicture;
             }
         };
@@ -653,10 +654,10 @@
             <div class="modal-header-content">
                 <h2><a href="${channelUrl}" target="_blank">${channel.title
             }</a></h2> 
-                <p>Subscribers: ${subscriberCount}</p>
-                <p>Total Views: ${totalViews}</p> 
-                <p>Videos: ${videoCount}</p>
-                <p>Created: ${creationDate}</p>
+                <p><strong>Subscribers:</strong> ${subscriberCount}</p>
+                <p><strong>Total Views:</strong> ${totalViews}</p> 
+                <p><strong>Videos:</strong> ${videoCount}</p>
+                <p><strong>Created:</strong> ${creationDate}</p>
             </div>
         </div>
         <div class="modal-description">
@@ -681,7 +682,6 @@
             const videos = await response.json();
             displayRecentVideos(videos);
         } catch (error) {
-            console.error('Error fetching recent videos:', error);
             document.getElementById('recent-videos').innerHTML =
                 'Error loading recent videos.';
         }
@@ -817,7 +817,6 @@
             link.click();
             document.body.removeChild(link);
         } catch (error) {
-            console.error('Error downloading CSV:', error);
         } finally {
             button.disabled = false;
             button.style.backgroundColor = '#e0e0e0';
@@ -840,7 +839,7 @@
 
     document
         .getElementById('search-input')
-        .addEventListener('input', debounce(searchChannels, 250));
+        .addEventListener('input', debounce(searchChannels, 200));
 
     function debounce(func, delay) {
         let debounceTimer;
