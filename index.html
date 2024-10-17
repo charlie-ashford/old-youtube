@@ -950,13 +950,6 @@
         }
     }
 
-    window.onclick = function (event) {
-        const modal = document.getElementById('channel-modal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    };
-
     window.onload = function () {
         getUrlParams();
         fetchChannels(currentPage, searchQuery);
@@ -977,18 +970,15 @@
     }
 
     window.onclick = function (event) {
-        const modal = document.getElementById('submission-modal');
-        if (event.target == modal) {
+        const submissionModal = document.getElementById('submission-modal');
+        const channelModal = document.getElementById('channel-modal');
+    
+        if (event.target == submissionModal) {
             closeSubmissionModal();
-        }
-    };
-
-    window.onclick = function (event) {
-        const modal = document.getElementById('channel-modal');
-        if (event.target == modal) {
+        } else if (event.target == channelModal) {
             closeModal();
         }
-    }
+    };
 </script>
 </body>
 
