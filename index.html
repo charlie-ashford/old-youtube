@@ -592,7 +592,7 @@
             year: 'numeric',
             month: 'long',
             day: 'numeric',
-            timeZone: 'America/New_York', 
+            timeZone: 'America/New_York',
         });
     }
 
@@ -674,7 +674,7 @@
                 channel.apiData?.statistics?.videoCount || '0'
             );
             const creationDate = formatDate(
-                channel.apiData?.snippet?.publishedAt || channel.publishedAt
+                channel.publishedAt
             );
 
             let formattedRating =
@@ -694,7 +694,7 @@
                 rating
             )}</span>
             </div>
-            <div class="date-added">Added: ${formatDate(creationDate)}</div>
+            <div class="date-added">Added: ${creationDate}</div>
         `;
 
             container.appendChild(channelBox);
@@ -721,7 +721,7 @@
             channel.apiData?.statistics?.videoCount || '0'
         );
         const creationDate = formatDate(
-            channel.apiData?.snippet?.publishedAt || channel.publishedAt
+            channel.publishedAt
         );
 
         const channelUrl = `https://www.youtube.com/channel/${channel.id}`;
@@ -973,7 +973,7 @@
     window.onclick = function (event) {
         const submissionModal = document.getElementById('submission-modal');
         const channelModal = document.getElementById('channel-modal');
-    
+
         if (event.target == submissionModal) {
             closeSubmissionModal();
         } else if (event.target == channelModal) {
