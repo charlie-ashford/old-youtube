@@ -610,7 +610,6 @@
             displayChannels(data.channels);
             updatePagination(data.totalPages, data.currentPage);
             updateUrl();
-            fetchData2();
 
         } catch (error) {
             container.innerHTML = '<div class="loading">Error loading channels</div>';
@@ -950,9 +949,11 @@
         }
     }
 
-    window.onload = function () {
+    window.onload = async function () {
         getUrlParams();
-        fetchChannels(currentPage, searchQuery);
+        const fetchData2Promise = fetchData2();
+        const fetchChannelsPromise = fetchChannels(currentPage, searchQuery);
+        await Promise.all([fetchData2Promise, fetchChannelsPromise]);
     };
 
     document
