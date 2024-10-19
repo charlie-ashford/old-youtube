@@ -696,26 +696,25 @@
             const videoCount = formatVideoCount(
                 channel.apiData?.statistics?.videoCount || '0'
             );
-            const creationDate = formatDate(
-                channel.publishedAt
-            );
+            const creationDate = formatDate(channel.publishedAt);
 
             let formattedRating =
                 rating === 0
                     ? '0'
                     : rating.toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '');
 
+            const subscriberText = subscriberCount === '1' ? 'subscriber' : 'subscribers';
+            const videoText = videoCount === '1' ? 'video' : 'videos';
+
             channelBox.innerHTML = `
             <img class="channel-thumbnail" alt="${channel.title}">
             <div class="channel-title">${channel.title}</div>
             <div class="channel-stats">
-                ${subscriberCount} subscribers<br>
-                ${videoCount} videos
+                ${subscriberCount} ${subscriberText}<br>
+                ${videoCount} ${videoText}
             </div>
             <div class="rating">
-                Rating: ${formattedRating} <span class="stars">${generateStars(
-                rating
-            )}</span>
+                Rating: ${formattedRating} <span class="stars">${generateStars(rating)}</span>
             </div>
             <div class="date-added">Joined: ${creationDate}</div>
         `;
