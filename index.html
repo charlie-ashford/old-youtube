@@ -392,7 +392,7 @@
         }
 
         #submission-requirements li {
-            margin-bottom: 8px;
+            margin-bottom: 3px;
             color: #555;
         }
 
@@ -797,7 +797,7 @@
         videos.forEach(video => {
             const videoElement = document.createElement('div');
             videoElement.className = 'video-item';
-            const videoId = video.id.videoId;
+            const videoId = video.snippet.resourceId.videoId;
             const publishDate = formatDate(video.snippet.publishedAt);
 
             videoElement.innerHTML = `
