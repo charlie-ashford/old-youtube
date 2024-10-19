@@ -372,6 +372,30 @@
             font-weight: bold;
         }
 
+        #submission-requirements {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        #submission-requirements h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        #submission-requirements ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        #submission-requirements li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
         @media (max-width: 768px) {
             #header-inner {
                 flex-direction: column;
@@ -487,17 +511,18 @@
     <div id="submission-modal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeSubmissionModal()">&times;</span>
-            <h2>Submit a Channel</h2>
+            <h2>Submit a channel</h2>
             <div id="submission-requirements">
-                <h3>Submission Requirements:</h3>
+                <h3>Requirements:</h3>
                 <ul>
+                    <li>The channel must still exist on YouTube.</li>
                     <li>The channel must have been created in 2005.</li>
                     <li>The channel must not already be on the site.</li>
-                    <li>You must provide the channel's URL, ID, username, or name.</li>
+                    <li>You must provide the channel URL, ID, username, or exact name.</li>
                 </ul>
             </div>
             <form id="channel-submission-form">
-                <label for="channel-url">Channel ID, username or name:</label>
+                <label for="channel-url">Channel URL, ID, username or name:</label>
                 <input type="text" id="channel-url" name="channel-url" required>
                 <button type="submit">Submit</button>
             </form>
