@@ -916,16 +916,13 @@
             });
 
             if (response.ok) {
-                resultDiv.innerText = 'Channel submitted successfully!';
-                resultDiv.style.color = 'green';
+                resultDiv.innerHTML = `<span style="color: green;">Channel submitted successfully!<br>The channel will be reviewed and added to the site soon.</span>`;
             } else {
                 const result = await response.json();
-                resultDiv.innerText = `Error: ${result.message || 'An error occurred'}`;
-                resultDiv.style.color = 'red';
+                resultDiv.innerHTML = `<span style="color: red;">Error: ${result.message || 'An error occurred'}</span>`;
             }
         } catch (error) {
-            resultDiv.innerText = 'Error submitting channel. Please try again.';
-            resultDiv.style.color = 'red';
+            resultDiv.innerHTML = `<span style="color: red;">Error submitting channel. Please try again.</span>`;
         } finally {
             submitButton.disabled = false;
             submitButton.innerText = 'Submit';
