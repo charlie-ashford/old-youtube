@@ -1,712 +1,647 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>YouTube - Broadcast Yourself</title>
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/b/bf/Logo_Youtube_app_%28IPhone_OS%29.jpg" type="image/png" />
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/b/bf/Logo_Youtube_app_%28IPhone_OS%29.jpg"
+      type="image/png"
+    />
     <style>
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-        a:hover {
-            color: #03c;
-            text-decoration: underline;
-        }
+      a:hover {
+        color: #03c;
+        text-decoration: underline;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f3f3;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            font-size: 14px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f8ff;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        font-size: 14px;
+      }
 
-        #header {
-            background: #ffffff;
-            border-bottom: 1px solid #ccc;
-            padding: 10px 0;
-            margin-bottom: 10px;
-        }
+      #header {
+        background: linear-gradient(to bottom, #e6e6e6, #fff);
+        border-bottom: 2px solid #ccc;
+        padding: 10px 0;
+        margin-bottom: 10px;
+      }
 
+      #header-inner {
+        width: 90%;
+        max-width: 960px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+      }
+
+      #masthead {
+        display: flex;
+        align-items: center;
+      }
+
+      .youtube-logo {
+        margin: 0 10px;
+      }
+
+      .youtube-logo img {
+        display: block;
+        max-width: 100px;
+        height: auto;
+      }
+
+      #search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      #count-button-container {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+      }
+
+      #download-csv-button,
+      #submit-channel-btn {
+        padding: 8px 16px;
+        background-color: #cc0000;
+        color: white;
+        border: 1px solid #990000;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 2px;
+      }
+
+      #download-csv-button:hover,
+      #submit-channel-btn:hover {
+        background-color: #990000;
+      }
+
+      #submit-channel-btn {
+        position: absolute;
+        right: -60px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      #main-content {
+        width: 90%;
+        max-width: 1040px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #999;
+        padding: 15px;
+      }
+
+      .channels-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .channel-box {
+        background: #fff;
+        border: 1px solid #666;
+        padding: 10px;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .channel-box:hover {
+        border-color: #03c;
+      }
+      
+      .channel-thumbnail {
+        width: 100%;
+        height: 100px;
+        border: 1px solid #666;
+        margin-bottom: 5px;
+        object-fit: cover;
+      }
+
+      .channel-title {
+        color: #03c;
+        font-weight: bold;
+        margin-bottom: 3px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .channel-stats,
+      .rating,
+      .date-added {
+        color: #666;
+        font-size: 12px;
+        margin-top: 3px;
+      }
+
+      .stars {
+        color: #fc0;
+        letter-spacing: -1px;
+      }
+
+      #pagination {
+        margin: 15px 0;
+        text-align: center;
+        background: #f7f7f7;
+        border: 1px solid #ccc;
+        padding: 5px;
+      }
+
+      #pagination a {
+        color: #03c;
+        text-decoration: none;
+        padding: 2px 4px;
+        margin: 0 2px;
+      }
+
+      #pagination a:hover {
+        text-decoration: underline;
+      }
+
+      #pagination a.active {
+        background: #e5ecf9;
+        border: 1px solid #8aa0bf;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close-button:hover,
+      .close-button:focus {
+        color: #000;
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+      }
+
+      .modal-header img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 15px;
+        border: 1px solid #ccc;
+      }
+
+      .modal-header-content h2 {
+        margin: 0 0 5px;
+        font-size: 20px;
+      }
+
+      .modal-description {
+        margin-bottom: 15px;
+        max-height: 100px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background-color: #f9f9f9;
+      }
+
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .video-item {
+        border: 1px solid #666;
+        padding: 5px;
+        text-align: center;
+        background: #fff;
+      }
+
+      .video-thumbnail {
+        width: 100%;
+        height: 75px;
+        object-fit: cover;
+      }
+
+      .video-title {
+        font-size: 11px;
+        margin-top: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .video-date {
+        color: #666;
+        font-size: 12px;
+        margin-top: 3px;
+      }
+
+      #channel-submission-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      #channel-submission-form input[type='text'] {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+      }
+
+      #channel-submission-form button {
+        padding: 8px 16px;
+        background-color: #cc0000;
+        color: white;
+        border: 1px solid #990000;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 2px;
+      }
+
+      #channel-submission-form button:hover {
+        background-color: #990000;
+      }
+      #submission-result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+
+      #submission-requirements {
+        background-color: #f9f9f9;
+        border: 1px solid #e0e0e0;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+
+      #submission-requirements h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      #submission-requirements ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+      
+      #submission-requirements li {
+        color: #555;
+        margin-bottom: 3px;
+      }
+
+      @media (max-width: 768px) {
         #header-inner {
-            width: 90%;
-            max-width: 960px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+          flex-direction: column;
+          align-items: flex-start;
         }
-
-        #masthead {
-            display: flex;
-            align-items: center;
-        }
-
-        .youtube-logo {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #000;
-            text-decoration: none;
-            font-family: 'Arial Black', Arial, sans-serif;
-            margin-right: 10px;
-            transform: translateX(-70px);
-        }
-
-        .youtube-logo span {
-            background: #cc0000;
-            color: white;
-            padding: 0 10px;
-            border-radius: 2px;
-            display: inline-block;
-        }
-
-        .play-button {
-            width: 0;
-            height: 0;
-            border-left: 15px solid white;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            margin-right: 5px;
-            display: inline-block;
-        }
-
-        .youtube-icon {
-            display: inline-block;
-            background-color: #ff0000;
-            width: 60px;
-            height: 36px;
-            border-radius: 2px;
-            margin-right: 5px;
-            position: relative;
-        }
-
-        .youtube-icon::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 18px;
-            height: 18px;
-            border-left: 8px solid white;
-            border-top: 4px solid transparent;
-            border-bottom: 4px solid transparent;
-        }
-
-        #search-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        #download-csv-button {
-            padding: 8px 16px;
-            background-color: #e0e0e0;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 4px;
-        }
-
-        #download-csv-button:hover {
-            background-color: #b0b0b0;
-        }
-
         #main-content {
-            width: 90%;
-            max-width: 1040px;
-            margin: 0 auto;
-            background: #fff;
-            border: 1px solid #ccc;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          padding: 10px;
         }
-
+        .youtube-logo {
+          filter: none;
+          text-align: center;
+        }
         .channels-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
+          grid-template-columns: repeat(2, 1fr);
         }
-
         .channel-box {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 10px;
-            cursor: pointer;
-            text-align: center;
-            transition: border-color 0.2s ease;
+          padding: 5px;
         }
-
-        .channel-box:hover {
-            border-color: #999;
-        }
-
         .channel-thumbnail {
-            width: 100%;
-            height: 100px;
-            border: 1px solid #666;
-            margin-bottom: 5px;
-            object-fit: cover;
+          height: 80px;
         }
-
         .channel-title {
-            color: #03c;
-            font-weight: bold;
-            margin-bottom: 3px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+          font-size: 14px;
         }
-
-        .channel-stats {
-            color: #666;
-            font-size: 12px;
-            line-height: 1.3;
-        }
-
+        .channel-stats,
+        .date-added,
         .rating {
-            color: #666;
-            font-size: 12px;
-            margin-top: 3px;
+          font-size: 10px;
         }
-
-        .stars {
-            color: #fc0;
-            letter-spacing: -1px;
-        }
-
-        .date-added {
-            color: #666;
-            font-size: 12px;
-            margin-top: 3px;
-        }
-
         #pagination {
-            margin: 15px 0;
-            text-align: center;
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            padding: 5px;
+          font-size: 12px;
         }
-
-        #pagination a {
-            color: #03c;
-            text-decoration: none;
-            padding: 2px 4px;
-            margin: 0 2px;
-        }
-
-        #pagination a:hover {
-            text-decoration: underline;
-        }
-
-        #pagination a.active {
-            background: #e5ecf9;
-            border: 1px solid #c6d5f3;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
         .modal-header img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-right: 15px;
+          width: 80px;
+          height: 80px;
         }
-
-        .modal-header-content {
-            flex-grow: 1;
-        }
-
         .modal-header-content h2 {
-            margin-top: 0;
-            margin-bottom: 5px;
+          font-size: 16px;
         }
-
         .modal-description {
-            margin-bottom: 15px;
-            max-height: 100px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 10px;
+          padding: 8px;
         }
-
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .video-date {
-            color: #666;
-            font-size: 12px;
-            margin-top: 3px;
-        }
-
-        .video-item {
-            border: 1px solid #ddd;
-            padding: 5px;
-            text-align: center;
-        }
-
         .video-thumbnail {
-            width: 100%;
-            height: 75px;
-            object-fit: cover;
+          height: 75px;
         }
-
         .video-title {
-            font-size: 11px;
-            margin-top: 5px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+          font-size: 10px;
         }
-
+      }
+      @media (max-width: 480px) {
+        .channels-grid {
+          grid-template-columns: 1fr;
+        }
         #header-inner {
-            position: relative;
+          align-items: center;
         }
-
-        #submit-channel-btn {
-            padding: 8px 16px;
-            background-color: #cc0000;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 4px;
-            position: absolute;
-            right: -50px;
-            top: 50%;
-            transform: translateY(-50%);
+        .youtube-logo {
+          font-size: 20px;
         }
-
-        #submit-channel-btn:hover {
-            background-color: #990000;
+        .channel-title {
+          font-size: 12px;
         }
-
-        #submission-modal .modal-content {
-            max-width: 450px;
+        #pagination {
+          font-size: 10px;
         }
-
-        #channel-submission-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+        .modal-header-content h2 {
+          font-size: 14px;
         }
-
-        #channel-submission-form input[type="text"] {
-            padding: 8px;
-            font-size: 14px;
+        .modal-description {
+          font-size: 10px;
         }
-
-        #channel-submission-form button {
-            padding: 8px 16px;
-            background-color: #cc0000;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 4px;
+        .video-title {
+          font-size: 9px;
         }
-
-        #channel-submission-form button:hover {
-            background-color: #990000;
-        }
-
-        #submission-result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        #submission-requirements {
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        #submission-requirements h3 {
-            margin-top: 0;
-            font-size: 16px;
-            color: #333;
-        }
-
-        #submission-requirements ul {
-            padding-left: 20px;
-            margin-bottom: 0;
-        }
-
-        #submission-requirements li {
-            margin-bottom: 3px;
-            color: #555;
-        }
-
-        @media (max-width: 768px) {
-            #header-inner {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            #main-content {
-                padding: 10px;
-            }
-
-            .youtube-logo {
-                transform: translateX(0px);
-            }
-
-            .channels-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .channel-box {
-                padding: 5px;
-            }
-
-            .channel-thumbnail {
-                height: 80px;
-            }
-
-            .channel-title {
-                font-size: 14px;
-            }
-
-            .channel-stats,
-            .date-added,
-            .rating {
-                font-size: 10px;
-            }
-
-            #pagination {
-                font-size: 12px;
-            }
-
-            .modal-header img {
-                width: 80px;
-                height: 80px;
-            }
-
-            .modal-header-content h2 {
-                font-size: 16px;
-            }
-
-            .modal-description {
-                padding: 8px;
-            }
-
-            .video-thumbnail {
-                height: 75px;
-            }
-
-            .video-title {
-                font-size: 10px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .channels-grid {
-                grid-template-columns: 1fr;
-            }
-
-            #header-inner {
-                align-items: center;
-            }
-
-            .youtube-logo {
-                font-size: 20px;
-                transform: translateX(0px);
-            }
-
-            .channel-title {
-                font-size: 12px;
-            }
-
-            #pagination {
-                font-size: 10px;
-            }
-
-            .modal-header-content h2 {
-                font-size: 14px;
-            }
-
-            .modal-description {
-                font-size: 10px;
-            }
-
-            .video-title {
-                font-size: 9px;
-            }
-        }
+      }
     </style>
-</head>
-
-<body>
+  </head>
+  <body>
     <div id="header">
-        <div id="header-inner">
-            <div id="masthead">
-                <div class="youtube-logo">
-                    <div class="play-button"></div>
-                    You<span>Tube</span>
-                </div>
-            </div>
-            <button id="submit-channel-btn" onclick="openSubmissionModal()">Submit Channel</button>
+      <div id="header-inner">
+        <div id="masthead">
+          <div class="youtube-logo">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo_of_YouTube_%282005-2006%29.svg"
+              alt="YouTube Logo"
+            />
+          </div>
         </div>
+        <button id="submit-channel-btn" onclick="openSubmissionModal()">
+          Submit Channel
+        </button>
+      </div>
     </div>
 
     <div id="submission-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeSubmissionModal()">&times;</span>
-            <h2>Submit a channel</h2>
-            <div id="submission-requirements">
-                <h3>Requirements:</h3>
-                <ul>
-                    <li>The channel must still exist on YouTube.</li>
-                    <li>The channel must have been created in 2005.</li>
-                    <li>The channel must not already be on the site.</li>
-                    <li>You must provide the channel URL, ID, username, or exact name.</li>
-                </ul>
-            </div>
-            <form id="channel-submission-form">
-                <label for="channel-url">Channel URL, ID, username or name:</label>
-                <input type="text" id="channel-url" name="channel-url" required>
-                <button type="submit">Submit</button>
-            </form>
-            <div id="submission-result"></div>
+      <div class="modal-content">
+        <span class="close-button" onclick="closeSubmissionModal()"
+          >&times;</span
+        >
+        <h2>Submit a channel</h2>
+        <div id="submission-requirements">
+          <h3>Requirements:</h3>
+          <ul>
+            <li>The channel must still exist on YouTube.</li>
+            <li>The channel must have been created in 2005.</li>
+            <li>The channel must not already be on the site.</li>
+            <li>
+              You must provide the channel URL, ID, username, or exact name.
+            </li>
+          </ul>
         </div>
-    </div>
-</body>
-
-<div id="main-content">
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Search channels..." oninput="searchChannels()" />
-        <div id="count-button-container" style="display: flex; align-items: center;">
-            <div id="channel-count" style="margin-right: 10px;">Number of Channels: Loading...</div>
-            <button id="download-csv" onclick="downloadCSV()">Download CSV</button>
-        </div>
+        <form id="channel-submission-form">
+          <label for="channel-url">Channel URL, ID, username or name:</label>
+          <input type="text" id="channel-url" name="channel-url" required />
+          <button type="submit">Submit</button>
+        </form>
+        <div id="submission-result"></div>
+      </div>
     </div>
 
-    <div id="channels-container" class="channels-grid"></div>
-    <div id="pagination">Loading pages...</div>
-</div>
+    <div id="main-content">
+      <div id="search-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search channels..."
+          oninput="searchChannels()"
+        />
+        <div
+          id="count-button-container"
+          style="display: flex; align-items: center"
+        >
+          <div id="channel-count" style="margin-right: 10px">
+            Number of Channels: Loading...
+          </div>
+          <button id="download-csv" onclick="downloadCSV()">
+            Download CSV
+          </button>
+        </div>
+      </div>
 
-<div id="channel-modal" class="modal">
-    <div class="modal-content">
+      <div id="channels-container" class="channels-grid"></div>
+      <div id="pagination">Loading pages...</div>
+    </div>
+
+    <div id="channel-modal" class="modal">
+      <div class="modal-content">
         <span class="close-button" onclick="closeModal()">&times;</span>
         <div id="modal-content-container"></div>
+      </div>
     </div>
-</div>
-<script>
-    let currentPage = 1;
-    let itemsPerPage = 48;
-    let searchQuery = '';
+    <script>
+      let currentPage = 1;
+      let itemsPerPage = 48;
+      let searchQuery = '';
 
-    function getUrlParams() {
+      function getUrlParams() {
         const params = new URLSearchParams(window.location.search);
         const page = parseInt(params.get('page'));
         const query = params.get('q');
 
         if (!isNaN(page) && page > 0) {
-            currentPage = page;
+          currentPage = page;
         }
 
         if (query) {
-            searchQuery = query;
-            document.getElementById('search-input').value = searchQuery;
+          searchQuery = query;
+          document.getElementById('search-input').value = searchQuery;
         }
-    }
+      }
 
-    function updateUrl() {
+      function updateUrl() {
         const url = new URL(window.location);
         url.searchParams.set('page', currentPage);
         url.searchParams.set('q', searchQuery);
         history.pushState({}, '', url);
-    }
+      }
 
-    function calculateRating(channel) {
+      function calculateRating(channel) {
         const subscriberCount = parseInt(
-            channel.apiData?.statistics?.subscriberCount || '0'
+          channel.apiData?.statistics?.subscriberCount || '0'
         );
         const totalViews = parseInt(
-            channel.apiData?.statistics?.viewCount || '0'
+          channel.apiData?.statistics?.viewCount || '0'
         );
         const maxRating = 5;
 
         if (totalViews === 0) return 0;
 
         const rating =
-            (Math.log(subscriberCount + 1) / Math.log(totalViews + 1)) *
-            maxRating;
+          (Math.log(subscriberCount + 1) / Math.log(totalViews + 1)) *
+          maxRating;
         return rating > maxRating ? maxRating : rating;
-    }
+      }
 
-    function generateStars(rating) {
+      function generateStars(rating) {
         const fullStars = Math.floor(rating);
         return '★'.repeat(fullStars) + '☆'.repeat(5 - fullStars);
-    }
+      }
 
-    function formatSubscriberCount(count) {
+      function formatSubscriberCount(count) {
         return parseInt(count).toLocaleString('en-US');
-    }
+      }
 
-    function formatTotalViews(totalViews) {
+      function formatTotalViews(totalViews) {
         return parseInt(totalViews).toLocaleString('en-US');
-    }
+      }
 
-    function formatVideoCount(videoCount) {
+      function formatVideoCount(videoCount) {
         return parseInt(videoCount).toLocaleString('en-US');
-    }
+      }
 
-    function formatDate(dateString) {
+      function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
         });
-    }
+      }
 
-    let allChannels = [];
+      let allChannels = [];
 
-    async function fetchChannels(page, query = '') {
+      async function fetchChannels(page, query = '') {
         const container = document.getElementById('channels-container');
         container.innerHTML = '<div class="loading">Loading channels...</div>';
 
         try {
-            const response = await fetch(
-                `https://api.communitrics.com/api/channels?page=${page}&query=${encodeURIComponent(query)}`
-            );
-            const data = await response.json();
+          const response = await fetch(
+            `https://api.communitrics.com/api/channels?page=${page}&query=${encodeURIComponent(
+              query
+            )}`
+          );
+          const data = await response.json();
 
-            displayChannels(data.channels);
-            updatePagination(data.totalPages, data.currentPage);
-            updateUrl();
-
+          displayChannels(data.channels);
+          updatePagination(data.totalPages, data.currentPage);
+          updateUrl();
         } catch (error) {
-            container.innerHTML = '<div class="loading">Error loading channels</div>';
+          container.innerHTML =
+            '<div class="loading">Error loading channels</div>';
         }
-    }
+      }
 
-    async function fetchData2() {
+      async function fetchData2() {
         try {
-            const responseData2 = await fetch('https://api.communitrics.com/api/all');
-            const data2 = await responseData2.json();
+          const responseData2 = await fetch(
+            'https://api.communitrics.com/api/all'
+          );
+          const data2 = await responseData2.json();
 
-            updateChannelCount(data2.channels.length.toLocaleString('en-US'));
+          updateChannelCount(data2.channels.length.toLocaleString('en-US'));
+        } catch (error) {}
+      }
 
-        } catch (error) {
-        }
-    }
+      function updateChannelCount(count) {
+        document.getElementById(
+          'channel-count'
+        ).innerHTML = `Number of Channels: <strong>${count}</strong>`;
+      }
 
-    function updateChannelCount(count) {
-        document.getElementById('channel-count').innerHTML = `Number of Channels: <strong>${count}</strong>`;
-    }
-
-    async function searchChannels() {
+      async function searchChannels() {
         searchQuery = document.getElementById('search-input').value;
         currentPage = 1;
         await fetchChannels(currentPage, searchQuery);
-    }
+      }
 
-    function loadImageWithRetry(imgElement, url, retries = 2) {
+      function loadImageWithRetry(imgElement, url, retries = 2) {
         imgElement.src = url;
 
         imgElement.onerror = () => {
-            if (retries > 0) {
-                setTimeout(
-                    () => loadImageWithRetry(imgElement, url, retries - 1),
-                    10000
-                );
-            } else {
-                imgElement.src = channel.profilePicture;
-            }
+          if (retries > 0) {
+            setTimeout(
+              () => loadImageWithRetry(imgElement, url, retries - 1),
+              10000
+            );
+          } else {
+            imgElement.src = channel.profilePicture;
+          }
         };
-    }
+      }
 
-    function displayChannels(channels) {
+      function displayChannels(channels) {
         const container = document.getElementById('channels-container');
         container.innerHTML = '';
 
         channels.forEach(channel => {
-            const channelBox = document.createElement('div');
-            channelBox.className = 'channel-box';
-            channelBox.onclick = () => showChannelDetails(channel);
+          const channelBox = document.createElement('div');
+          channelBox.className = 'channel-box';
+          channelBox.onclick = () => showChannelDetails(channel);
 
-            const rating = calculateRating(channel);
-            const thumbnailUrl =
-                channel.apiData?.snippet?.thumbnails?.default?.url ||
-                channel.profilePicture;
-            const subscriberCount = formatSubscriberCount(
-                channel.apiData?.statistics?.subscriberCount || '0'
-            );
-            const videoCount = formatVideoCount(
-                channel.apiData?.statistics?.videoCount || '0'
-            );
-            const creationDate = formatDate(channel.publishedAt);
+          const rating = calculateRating(channel);
+          const thumbnailUrl =
+            channel.apiData?.snippet?.thumbnails?.default?.url ||
+            channel.profilePicture;
+          const subscriberCount = formatSubscriberCount(
+            channel.apiData?.statistics?.subscriberCount || '0'
+          );
+          const videoCount = formatVideoCount(
+            channel.apiData?.statistics?.videoCount || '0'
+          );
+          const creationDate = formatDate(channel.publishedAt);
 
-            let formattedRating =
-                rating === 0
-                    ? '0'
-                    : rating.toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '');
+          let formattedRating =
+            rating === 0
+              ? '0'
+              : rating.toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '');
 
-            const subscriberText = subscriberCount === '1' ? 'subscriber' : 'subscribers';
-            const videoText = videoCount === '1' ? 'video' : 'videos';
+          const subscriberText =
+            subscriberCount === '1' ? 'subscriber' : 'subscribers';
+          const videoText = videoCount === '1' ? 'video' : 'videos';
 
-            channelBox.innerHTML = `
+          channelBox.innerHTML = `
             <img class="channel-thumbnail" alt="${channel.title}">
             <div class="channel-title">${channel.title}</div>
             <div class="channel-stats">
@@ -714,48 +649,50 @@
                 ${videoCount} ${videoText}
             </div>
             <div class="rating">
-                Rating: ${formattedRating} <span class="stars">${generateStars(rating)}</span>
+                Rating: ${formattedRating} <span class="stars">${generateStars(
+            rating
+          )}</span>
             </div>
             <div class="date-added">Joined: ${creationDate}</div>
         `;
 
-            container.appendChild(channelBox);
-            const imgElement = channelBox.querySelector('.channel-thumbnail');
-            loadImageWithRetry(imgElement, thumbnailUrl);
+          container.appendChild(channelBox);
+          const imgElement = channelBox.querySelector('.channel-thumbnail');
+          loadImageWithRetry(imgElement, thumbnailUrl);
         });
 
         if (channels.length === 0) {
-            container.innerHTML = '<div>No channels found.</div>';
+          container.innerHTML = '<div>No channels found.</div>';
         }
-    }
+      }
 
-    function showChannelDetails(channel) {
+      function showChannelDetails(channel) {
         const modal = document.getElementById('channel-modal');
         const modalContent = document.getElementById('modal-content-container');
 
         const subscriberCount = formatSubscriberCount(
-            channel.apiData?.statistics?.subscriberCount || '0'
+          channel.apiData?.statistics?.subscriberCount || '0'
         );
         const totalViews = formatTotalViews(
-            channel.apiData?.statistics?.viewCount || '0'
+          channel.apiData?.statistics?.viewCount || '0'
         );
         const videoCount = formatVideoCount(
-            channel.apiData?.statistics?.videoCount || '0'
+          channel.apiData?.statistics?.videoCount || '0'
         );
-        const creationDate = formatDate(
-            channel.publishedAt
-        );
+        const creationDate = formatDate(channel.publishedAt);
 
         const channelUrl = `https://www.youtube.com/channel/${channel.id}`;
 
         modalContent.innerHTML = `
         <div class="modal-header">
-            <img src="${channel.apiData?.snippet?.thumbnails?.default?.url ||
-            channel.profilePicture
+            <img src="${
+              channel.apiData?.snippet?.thumbnails?.default?.url ||
+              channel.profilePicture
             }" alt="${channel.title}">
             <div class="modal-header-content">
-                <h2><a href="${channelUrl}" target="_blank">${channel.title
-            }</a></h2> 
+                <h2><a href="${channelUrl}" target="_blank">${
+          channel.title
+        }</a></h2> 
                 <p><strong>Subscribers:</strong> ${subscriberCount}</p>
                 <p><strong>Total Views:</strong> ${totalViews}</p> 
                 <p><strong>Videos:</strong> ${videoCount}</p>
@@ -763,8 +700,9 @@
             </div>
         </div>
         <div class="modal-description">
-            <p>${channel.apiData?.snippet?.description ||
-            'No description available.'
+            <p>${
+              channel.apiData?.snippet?.description ||
+              'No description available.'
             }</p>
         </div>
         <h3>Recent Videos</h3>
@@ -776,160 +714,173 @@
         modal.style.display = 'block';
 
         fetchRecentVideos(channel.id);
-    }
+      }
 
-    async function fetchRecentVideos(channelId) {
+      async function fetchRecentVideos(channelId) {
         try {
-            const response = await fetch(`https://api.communitrics.com/api/channel/${channelId}/videos`);
-            const videos = await response.json();
-            displayRecentVideos(videos);
+          const response = await fetch(
+            `https://api.communitrics.com/api/channel/${channelId}/videos`
+          );
+          const videos = await response.json();
+          displayRecentVideos(videos);
         } catch (error) {
-            document.getElementById('recent-videos').innerHTML =
-                'Error loading recent videos.';
+          document.getElementById('recent-videos').innerHTML =
+            'Error loading recent videos.';
         }
-    }
+      }
 
-    function displayRecentVideos(videos) {
+      function displayRecentVideos(videos) {
         const recentVideosContainer = document.getElementById('recent-videos');
         recentVideosContainer.innerHTML = '';
 
         videos.forEach(video => {
-            const videoElement = document.createElement('div');
-            videoElement.className = 'video-item';
-            const videoId = video.snippet.resourceId.videoId;
-            const publishDate = formatDate(video.snippet.publishedAt);
+          const videoElement = document.createElement('div');
+          videoElement.className = 'video-item';
+          const videoId = video.snippet.resourceId.videoId;
+          const publishDate = formatDate(video.snippet.publishedAt);
 
-            videoElement.innerHTML = `
-            <img class="video-thumbnail" src="${video.snippet.thumbnails.medium.url || '/api/placeholder/120/90'
-                }" alt="${video.snippet.title}">
-            <div class="video-title"><a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">${video.snippet.title
-                }</a></div>
+          videoElement.innerHTML = `
+            <img class="video-thumbnail" src="${
+              video.snippet.thumbnails.medium.url || '/api/placeholder/120/90'
+            }" alt="${video.snippet.title}">
+            <div class="video-title"><a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">${
+            video.snippet.title
+          }</a></div>
             <div class="video-date">${publishDate}</div> 
         `;
-            recentVideosContainer.appendChild(videoElement);
+          recentVideosContainer.appendChild(videoElement);
         });
-    }
+      }
 
-    function updatePagination(totalPages, currentPage) {
+      function updatePagination(totalPages, currentPage) {
         const pagination = document.getElementById('pagination');
         let paginationHTML = 'Pages: ';
 
         if (totalPages <= 1) {
-            pagination.innerHTML = '';
-            return;
+          pagination.innerHTML = '';
+          return;
         }
 
         if (currentPage > 1) {
-            paginationHTML += `<a href="#" onclick="changePage(${currentPage - 1
-                }); return false">Previous</a> `;
+          paginationHTML += `<a href="#" onclick="changePage(${
+            currentPage - 1
+          }); return false">Previous</a> `;
         }
 
         let startPage = Math.max(1, currentPage - 2);
         let endPage = Math.min(totalPages, startPage + 4);
 
         if (startPage > 1) {
-            paginationHTML += `<a href="#" onclick="changePage(1); return false">1</a> `;
-            if (startPage > 2) {
-                paginationHTML += '... ';
-            }
+          paginationHTML += `<a href="#" onclick="changePage(1); return false">1</a> `;
+          if (startPage > 2) {
+            paginationHTML += '... ';
+          }
         }
 
         for (let i = startPage; i <= endPage; i++) {
-            if (i === currentPage) {
-                paginationHTML += `<a href="#" class="active">${i}</a> `;
-            } else {
-                paginationHTML += `<a href="#" onclick="changePage(${i}); return false">${i}</a> `;
-            }
+          if (i === currentPage) {
+            paginationHTML += `<a href="#" class="active">${i}</a> `;
+          } else {
+            paginationHTML += `<a href="#" onclick="changePage(${i}); return false">${i}</a> `;
+          }
         }
 
         if (endPage < totalPages) {
-            if (endPage < totalPages - 1) {
-                paginationHTML += '... ';
-            }
-            paginationHTML += `<a href="#" onclick="changePage(${totalPages}); return false">${totalPages}</a>`;
+          if (endPage < totalPages - 1) {
+            paginationHTML += '... ';
+          }
+          paginationHTML += `<a href="#" onclick="changePage(${totalPages}); return false">${totalPages}</a>`;
         }
 
         if (currentPage < totalPages) {
-            paginationHTML += ` <a href="#" onclick="changePage(${currentPage + 1
-                }); return false">Next</a>`;
+          paginationHTML += ` <a href="#" onclick="changePage(${
+            currentPage + 1
+          }); return false">Next</a>`;
         }
 
         pagination.innerHTML = paginationHTML;
-    }
+      }
 
-    function changePage(page) {
+      function changePage(page) {
         currentPage = page;
         fetchChannels(currentPage);
-    }
+      }
 
-    function changeSort() {
+      function changeSort() {
         currentSort = document.getElementById('sort-options').value;
         fetchChannels(currentPage);
-    }
+      }
 
-    function jumpToPage() {
+      function jumpToPage() {
         const pageInput = document.getElementById('page-input').value;
         const pageNumber = parseInt(pageInput);
 
         if (!isNaN(pageNumber)) {
-            changePage(pageNumber);
+          changePage(pageNumber);
         }
-    }
+      }
 
-    async function changePage(page) {
+      async function changePage(page) {
         currentPage = page;
         await fetchChannels(currentPage, searchQuery);
-    }
+      }
 
-    function closeModal() {
+      function closeModal() {
         const modal = document.getElementById('channel-modal');
         modal.style.display = 'none';
-    }
+      }
 
-    function openSubmissionModal() {
+      function openSubmissionModal() {
         document.getElementById('submission-modal').style.display = 'block';
-    }
+      }
 
-    function closeSubmissionModal() {
+      function closeSubmissionModal() {
         document.getElementById('submission-modal').style.display = 'none';
         document.getElementById('submission-result').innerText = '';
         document.getElementById('channel-url').value = '';
-    }
+      }
 
-    document.getElementById('channel-submission-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const channelUrl = document.getElementById('channel-url').value;
-        const submitButton = this.querySelector('button[type="submit"]');
-        const resultDiv = document.getElementById('submission-result');
+      document
+        .getElementById('channel-submission-form')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const channelUrl = document.getElementById('channel-url').value;
+          const submitButton = this.querySelector('button[type="submit"]');
+          const resultDiv = document.getElementById('submission-result');
 
-        submitButton.disabled = true;
-        submitButton.innerText = 'Submitting...';
-        resultDiv.innerText = '';
+          submitButton.disabled = true;
+          submitButton.innerText = 'Submitting...';
+          resultDiv.innerText = '';
 
-        try {
-            const response = await fetch('https://api.communitrics.com/api/submit-channel', {
+          try {
+            const response = await fetch(
+              'https://api.communitrics.com/api/submit-channel',
+              {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                  'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ channelUrl }),
-            });
+              }
+            );
 
             if (response.ok) {
-                resultDiv.innerHTML = `<span style="color: green;">Channel submitted successfully!<br>The channel will be reviewed and added to the site soon.</span>`;
+              resultDiv.innerHTML = `<span style="color: green;">Channel submitted successfully!<br>The channel will be reviewed and added to the site soon.</span>`;
             } else {
-                const result = await response.json();
-                resultDiv.innerHTML = `<span style="color: red;">Error: ${result.message || 'An error occurred'}</span>`;
+              const result = await response.json();
+              resultDiv.innerHTML = `<span style="color: red;">Error: ${
+                result.message || 'An error occurred'
+              }</span>`;
             }
-        } catch (error) {
+          } catch (error) {
             resultDiv.innerHTML = `<span style="color: red;">Error submitting channel. Please try again.</span>`;
-        } finally {
+          } finally {
             submitButton.disabled = false;
             submitButton.innerText = 'Submit';
-        }
-    });
+          }
+        });
 
-    async function downloadCSV() {
+      async function downloadCSV() {
         const button = document.getElementById('download-csv');
 
         button.disabled = true;
@@ -938,70 +889,71 @@
         button.title = 'Loading, please wait...';
 
         try {
-            const response = await fetch('https://api.communitrics.com/api/all');
-            const data = await response.json();
-            const channels = data.channels;
+          const response = await fetch('https://api.communitrics.com/api/all');
+          const data = await response.json();
+          const channels = data.channels;
 
-            const csvData = channels.map(channel => {
-                return Object.values(channel).map(value => `"${value}"`).join(',');
-            });
+          const csvData = channels.map(channel => {
+            return Object.values(channel)
+              .map(value => `"${value}"`)
+              .join(',');
+          });
 
-            const csvContent = [
-                Object.keys(channels[0]).join(','),
-                ...csvData
-            ].join('\n');
+          const csvContent = [
+            Object.keys(channels[0]).join(','),
+            ...csvData,
+          ].join('\n');
 
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
+          const blob = new Blob([csvContent], { type: 'text/csv' });
+          const url = window.URL.createObjectURL(blob);
 
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'channels.csv';
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'channels.csv';
 
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         } catch (error) {
         } finally {
-            button.disabled = false;
-            button.style.backgroundColor = '#e0e0e0';
-            button.style.cursor = 'pointer';
-            button.title = '';
+          button.disabled = false;
+          button.style.backgroundColor = '#e0e0e0';
+          button.style.cursor = 'pointer';
+          button.title = '';
         }
-    }
+      }
 
-    window.onload = async function () {
+      window.onload = async function () {
         getUrlParams();
         const fetchData2Promise = fetchData2();
         const fetchChannelsPromise = fetchChannels(currentPage, searchQuery);
         await Promise.all([fetchData2Promise, fetchChannelsPromise]);
-    };
+      };
 
-    document
+      document
         .getElementById('search-input')
         .addEventListener('input', debounce(searchChannels, 200));
 
-    function debounce(func, delay) {
+      function debounce(func, delay) {
         let debounceTimer;
         return function () {
-            const context = this;
-            const args = arguments;
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => func.apply(context, args), delay);
+          const context = this;
+          const args = arguments;
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => func.apply(context, args), delay);
         };
-    }
+      }
 
-    window.onclick = function (event) {
+      window.onclick = function (event) {
         const submissionModal = document.getElementById('submission-modal');
         const channelModal = document.getElementById('channel-modal');
 
         if (event.target == submissionModal) {
-            closeSubmissionModal();
+          closeSubmissionModal();
         } else if (event.target == channelModal) {
-            closeModal();
+          closeModal();
         }
-    };
-</script>
-</body>
-
+      };
+    </script>
+  </body>
 </html>
