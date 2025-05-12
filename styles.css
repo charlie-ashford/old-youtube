@@ -1,0 +1,395 @@
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #03c;
+  text-decoration: underline;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f8ff;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-size: 14px;
+}
+
+#header {
+  background: linear-gradient(to bottom, #e6e6e6, #fff);
+  border-bottom: 2px solid #ccc;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+#header-inner {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+#masthead {
+  display: flex;
+  align-items: center;
+}
+
+.youtube-logo {
+  margin: 0 10px;
+}
+
+.youtube-logo img {
+  display: block;
+  max-width: 100px;
+  height: auto;
+}
+
+#search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#count-button-container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+#download-csv-button,
+#submit-channel-btn {
+  padding: 8px 16px;
+  background-color: #cc0000;
+  color: white;
+  border: 1px solid #990000;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+#download-csv-button:hover,
+#submit-channel-btn:hover {
+  background-color: #990000;
+}
+
+#submit-channel-btn {
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#main-content {
+  width: 90%;
+  max-width: 1040px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #999;
+  padding: 15px;
+}
+
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.channel-box {
+  background: #fff;
+  border: 1px solid #666;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.channel-box:hover {
+  border-color: #03c;
+}
+
+.channel-thumbnail {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #666;
+  margin-bottom: 5px;
+  object-fit: cover;
+}
+
+.channel-title {
+  color: #03c;
+  font-weight: bold;
+  margin-bottom: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.channel-stats,
+.rating,
+.date-added {
+  color: #666;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.stars {
+  color: #fc0;
+  letter-spacing: -1px;
+}
+
+#pagination {
+  margin: 15px 0;
+  text-align: center;
+  background: #f7f7f7;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+#pagination a {
+  color: #03c;
+  text-decoration: none;
+  padding: 2px 4px;
+  margin: 0 2px;
+}
+
+#pagination a:hover {
+  text-decoration: underline;
+}
+
+#pagination a.active {
+  background: #e5ecf9;
+  border: 1px solid #8aa0bf;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #000;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.modal-header img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 1px solid #ccc;
+}
+
+.modal-header-content h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+}
+
+.modal-description {
+  margin-bottom: 15px;
+  max-height: 100px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.video-item {
+  border: 1px solid #666;
+  padding: 5px;
+  text-align: center;
+  background: #fff;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 75px;
+  object-fit: cover;
+}
+
+.video-title {
+  font-size: 11px;
+  margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.video-date {
+  color: #666;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+#channel-submission-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#channel-submission-form input[type='text'] {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+}
+
+#channel-submission-form button {
+  padding: 8px 16px;
+  background-color: #cc0000;
+  color: white;
+  border: 1px solid #990000;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+#channel-submission-form button:hover {
+  background-color: #990000;
+}
+#submission-result {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+#submission-requirements {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+#submission-requirements h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+#submission-requirements ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+#submission-requirements li {
+  color: #555;
+  margin-bottom: 3px;
+}
+
+@media (max-width: 768px) {
+  #header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #main-content {
+    padding: 10px;
+  }
+  .youtube-logo {
+    filter: none;
+    text-align: center;
+  }
+  .channels-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .channel-box {
+    padding: 5px;
+  }
+  .channel-thumbnail {
+    height: 80px;
+  }
+  .channel-title {
+    font-size: 14px;
+  }
+  .channel-stats,
+  .date-added,
+  .rating {
+    font-size: 10px;
+  }
+  #pagination {
+    font-size: 12px;
+  }
+  .modal-header img {
+    width: 80px;
+    height: 80px;
+  }
+  .modal-header-content h2 {
+    font-size: 16px;
+  }
+  .modal-description {
+    padding: 8px;
+  }
+  .video-thumbnail {
+    height: 75px;
+  }
+  .video-title {
+    font-size: 10px;
+  }
+}
+@media (max-width: 480px) {
+  .channels-grid {
+    grid-template-columns: 1fr;
+  }
+  #header-inner {
+    align-items: center;
+  }
+  .youtube-logo {
+    font-size: 20px;
+  }
+  .channel-title {
+    font-size: 12px;
+  }
+  #pagination {
+    font-size: 10px;
+  }
+  .modal-header-content h2 {
+    font-size: 14px;
+  }
+  .modal-description {
+    font-size: 10px;
+  }
+  .video-title {
+    font-size: 9px;
+  }
+}
