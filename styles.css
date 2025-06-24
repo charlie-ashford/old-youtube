@@ -24,30 +24,33 @@ body {
   margin-bottom: 10px;
 }
 
-#header-inner {
-  width: 90%;
-  max-width: 960px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
 
-#masthead {
-  display: flex;
-  align-items: center;
-}
-
-.youtube-logo {
-  margin: 0 10px;
-}
-
-.youtube-logo img {
-  display: block;
-  max-width: 100px;
-  height: auto;
-}
+	#header-inner {
+	  width: 90%;
+	  max-width: 960px;
+	  margin: 0 auto;
+	  display: flex;
+	  align-items: center;
+	  position: relative;
+	  padding: 0 80px 0 0;
+	}
+	
+	#masthead {
+	  display: flex;
+	  align-items: center;
+	}
+	
+	.youtube-logo {
+	  margin: 0;
+	  display: flex;
+	  align-items: center;
+	}
+	
+	.youtube-logo img {
+	  display: block;
+	  max-width: 100px;
+	  height: auto;
+	}
 
 #search-container {
   display: flex;
@@ -79,7 +82,7 @@ body {
 
 #submit-channel-btn {
   position: absolute;
-  right: -60px;
+  right: -15px;
   top: 50%;
   transform: translateY(-50%);
 }
