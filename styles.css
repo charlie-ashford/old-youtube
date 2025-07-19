@@ -15,6 +15,7 @@ body {
   padding: 0;
   color: #333;
   font-size: 14px;
+  overflow-x: hidden;
 }
 
 #header {
@@ -26,12 +27,13 @@ body {
 
 #header-inner {
   width: 90%;
-  max-width: 960px;
+  max-width: 1040px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   position: relative;
-  padding: 0 80px 0 0;
+  padding: 0 15px; 
+  box-sizing: border-box;
 }
 
 #masthead {
@@ -55,15 +57,30 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  box-sizing: border-box;
 }
 
 #count-button-container {
   margin-left: auto;
   display: flex;
   align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 #download-csv-button,
+#download-csv,
 #submit-channel-btn {
   padding: 8px 16px;
   background-color: #cc0000;
@@ -72,16 +89,19 @@ body {
   cursor: pointer;
   font-size: 14px;
   border-radius: 2px;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 #download-csv-button:hover,
+#download-csv:hover,
 #submit-channel-btn:hover {
   background-color: #990000;
 }
 
 #submit-channel-btn {
   position: absolute;
-  right: -15px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -93,6 +113,7 @@ body {
   background: #fff;
   border: 1px solid #999;
   padding: 15px;
+  box-sizing: border-box;
 }
 
 .channels-grid {
@@ -108,6 +129,7 @@ body {
   padding: 10px;
   cursor: pointer;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .channel-box:hover {
@@ -120,6 +142,7 @@ body {
   border: 1px solid #666;
   margin-bottom: 5px;
   object-fit: cover;
+  box-sizing: border-box;
 }
 
 .channel-title {
@@ -150,6 +173,7 @@ body {
   background: #f7f7f7;
   border: 1px solid #ccc;
   padding: 5px;
+  box-sizing: border-box;
 }
 
 #pagination a {
@@ -189,6 +213,7 @@ body {
   max-width: 800px;
   max-height: 80vh;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .close-button {
@@ -230,6 +255,7 @@ body {
   border: 1px solid #ddd;
   padding: 10px;
   background-color: #f9f9f9;
+  box-sizing: border-box;
 }
 
 .video-grid {
@@ -244,6 +270,7 @@ body {
   padding: 5px;
   text-align: center;
   background: #fff;
+  box-sizing: border-box;
 }
 
 .video-thumbnail {
@@ -277,6 +304,7 @@ body {
   padding: 8px;
   font-size: 14px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
 #channel-submission-form button {
@@ -287,11 +315,13 @@ body {
   cursor: pointer;
   font-size: 14px;
   border-radius: 2px;
+  box-sizing: border-box;
 }
 
 #channel-submission-form button:hover {
   background-color: #990000;
 }
+
 #submission-result {
   margin-top: 20px;
   font-weight: bold;
@@ -302,6 +332,7 @@ body {
   border: 1px solid #e0e0e0;
   padding: 15px;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 #submission-requirements h3 {
@@ -349,24 +380,203 @@ body {
 @media (max-width: 768px) {
   #header-inner {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    padding: 0 15px;
+    gap: 15px;
+    width: calc(100% - 30px);
+  }
+
+  #submit-channel-btn {
+    position: static;
+    transform: none;
+    margin-top: 10px;
+  }
+
+  .youtube-logo img {
+    max-width: 120px;
   }
 
   #main-content {
-    padding: 10px;
+    padding: 15px;
+    width: calc(100% - 30px);
+    margin: 0 15px;
   }
 
-  .youtube-logo {
-    filter: none;
+  #search-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    width: 100%;
+  }
+
+  #search-input {
+    min-width: auto;
+    width: 100%;
+  }
+
+  #count-button-container {
+    margin-left: 0;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  #channel-count {
+    font-size: 13px;
+    margin-right: 0;
+    flex: 1;
+    text-align: left;
+  }
+
+  #download-csv {
+    flex-shrink: 0;
+  }
+
+  .channels-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .channel-box {
+    padding: 8px;
+  }
+
+  .channel-thumbnail {
+    height: 90px;
+  }
+
+  .channel-title {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .channel-stats,
+  .date-added,
+  .rating {
+    font-size: 11px;
+  }
+
+  #pagination {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  #pagination a {
+    padding: 4px 6px;
+    margin: 0 1px;
+  }
+
+  .modal-content {
+    margin: 2% auto;
+    padding: 15px;
+    width: calc(100% - 20px);
+    max-height: 90vh;
+  }
+
+  .modal-header {
+    flex-direction: column;
+    align-items: center;
     text-align: center;
+  }
+
+  .modal-header img {
+    width: 80px;
+    height: 80px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .modal-header-content h2 {
+    font-size: 18px;
+  }
+
+  .modal-description {
+    padding: 10px;
+    max-height: 120px;
+  }
+
+  .video-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+  }
+
+  .video-thumbnail {
+    height: 60px;
+  }
+
+  .video-title {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .video-date {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+
+  #header {
+    padding: 8px 0;
+  }
+
+  #header-inner {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    gap: 10px;
+  }
+
+  .youtube-logo img {
+    max-width: 100px;
+  }
+
+  #submit-channel-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  #main-content {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: none;
+    margin: 0 10px;
+  }
+
+  #search-container {
+    gap: 10px;
+  }
+
+  #search-input {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  #count-button-container {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  #channel-count {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  #download-csv {
+    width: 100%;
+    padding: 10px;
   }
 
   .channels-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   .channel-box {
-    padding: 5px;
+    padding: 6px;
   }
 
   .channel-thumbnail {
@@ -374,71 +584,159 @@ body {
   }
 
   .channel-title {
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 1.3;
+    margin-bottom: 4px;
   }
 
   .channel-stats,
   .date-added,
   .rating {
     font-size: 10px;
+    line-height: 1.2;
   }
 
   #pagination {
     font-size: 12px;
+    padding: 6px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #pagination a {
+    padding: 3px 5px;
+    display: inline-block;
+  }
+
+  .modal-content {
+    margin: 1% auto;
+    padding: 12px;
+    width: calc(100% - 10px);
+    max-height: 95vh;
+    margin: 5px;
+  }
+
+  .close-button {
+    font-size: 24px;
   }
 
   .modal-header img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
 
   .modal-header-content h2 {
     font-size: 16px;
+    word-wrap: break-word;
+  }
+
+  .modal-header-content p {
+    font-size: 12px;
+    margin: 2px 0;
   }
 
   .modal-description {
     padding: 8px;
+    font-size: 12px;
+    max-height: 100px;
+  }
+
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .video-item {
+    padding: 4px;
   }
 
   .video-thumbnail {
-    height: 75px;
-  }
-
-  .video-title {
-    font-size: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .channels-grid {
-    grid-template-columns: 1fr;
-  }
-
-  #header-inner {
-    align-items: center;
-  }
-
-  .youtube-logo {
-    font-size: 20px;
-  }
-
-  .channel-title {
-    font-size: 12px;
-  }
-
-  #pagination {
-    font-size: 10px;
-  }
-
-  .modal-header-content h2 {
-    font-size: 14px;
-  }
-
-  .modal-description {
-    font-size: 10px;
+    height: 50px;
   }
 
   .video-title {
     font-size: 9px;
+    line-height: 1.1;
+  }
+
+  .video-date {
+    font-size: 9px;
+  }
+
+  #submission-requirements {
+    padding: 10px;
+  }
+
+  #submission-requirements h3 {
+    font-size: 14px;
+  }
+
+  #submission-requirements li {
+    font-size: 12px;
+  }
+
+  #channel-submission-form input[type='text'] {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  #channel-submission-form button {
+    padding: 10px 16px;
+  }
+
+  #footer {
+    padding: 10px 0;
+  }
+
+  #footer-inner {
+    font-size: 11px;
+    width: calc(100% - 20px);
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 320px) {
+  #header-inner {
+    width: calc(100% - 10px);
+    padding: 0 5px;
+  }
+
+  #main-content {
+    width: calc(100% - 10px);
+    margin: 0 5px;
+    padding: 8px;
+  }
+
+  .channels-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .channel-box {
+    padding: 8px;
+  }
+
+  .channel-thumbnail {
+    height: 100px;
+  }
+
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #count-button-container {
+    gap: 6px;
+  }
+
+  .modal-content {
+    width: calc(100% - 5px);
+    margin: 2px;
+    padding: 8px;
+  }
+
+  #footer-inner {
+    width: calc(100% - 10px);
+    padding: 0 5px;
   }
 }
