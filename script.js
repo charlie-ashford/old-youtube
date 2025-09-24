@@ -25,17 +25,26 @@ function updateUrl() {
 }
 
 function calculateRating(channel) {
-  const subscriberCount = parseInt(
-    channel.apiData?.statistics?.subscriberCount || '0'
-  );
-  const totalViews = parseInt(channel.apiData?.statistics?.viewCount || '0');
+  const subscribers = parseInt(channel.apiData?.statistics?.subscriberCount || '0');
+  const views = parseInt(channel.apiData?.statistics?.viewCount || '0');
+  const videoCount = parseInt(channel.apiData?.statistics?.videoCount || '0');
   const maxRating = 5;
-
-  if (totalViews === 0) return 0;
-
-  const rating =
-    (Math.log(subscriberCount + 1) / Math.log(totalViews + 1)) * maxRating;
-  return rating > maxRating ? maxRating : rating;
+  
+  if (views === 0 || videoCount === 0) return 0;
+  
+  const viewsPerVideo = views / videoCount;
+  const subsToViews = subscribers / views;
+  const subsToVideos = subscribers / videoCount;
+  
+  const engagement = Math.log10(viewsPerVideo + 1) * 0.5;
+  const loyalty = Math.log10(subsToViews * 1000 + 1) * 2;
+  const consistency = Math.log10(subsToVideos + 1) * 1.5;
+  
+  let rating = (engagement + loyalty + consistency);
+    
+  rating = Math.max(0, Math.min(maxRating, rating));
+  
+  return rating;
 }
 
 function generateStars(rating) {
