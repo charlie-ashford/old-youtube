@@ -410,15 +410,21 @@ async function downloadCSV() {
     const data = await response.json();
     const channels = data.channels;
 
+    const headers = Object.keys(channels[0]);
+
     const csvData = channels.map(channel => {
-      return Object.values(channel)
-        .map(value => `"${value}"`)
-        .join(',');
+      return headers.map(key => {
+        let value = channel[key];
+
+        if (typeof value === 'object' && value !== null) {
+          value = JSON.stringify(value);
+        }
+
+        return `"${String(value).replace(/"/g, '""')}"`;
+      }).join(',');
     });
 
-    const csvContent = [Object.keys(channels[0]).join(','), ...csvData].join(
-      '\n'
-    );
+    const csvContent = [headers.join(','), ...csvData].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
@@ -431,6 +437,7 @@ async function downloadCSV() {
     link.click();
     document.body.removeChild(link);
   } catch (error) {
+    console.error('Error downloading CSV:', error);
   } finally {
     button.disabled = false;
     button.style.backgroundColor = '#e0e0e0';
