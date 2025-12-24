@@ -25,25 +25,27 @@ function updateUrl() {
 }
 
 function calculateRating(channel) {
-  const subscribers = parseInt(channel.apiData?.statistics?.subscriberCount || '0');
+  const subscribers = parseInt(
+    channel.apiData?.statistics?.subscriberCount || '0'
+  );
   const views = parseInt(channel.apiData?.statistics?.viewCount || '0');
   const videoCount = parseInt(channel.apiData?.statistics?.videoCount || '0');
   const maxRating = 5;
-  
+
   if (views === 0 || videoCount === 0) return 0;
-  
+
   const viewsPerVideo = views / videoCount;
   const subsToViews = subscribers / views;
   const subsToVideos = subscribers / videoCount;
-  
+
   const engagement = Math.log10(viewsPerVideo + 1) * 0.5;
   const loyalty = Math.log10(subsToViews * 1000 + 1) * 2;
   const consistency = Math.log10(subsToVideos + 1) * 1.5;
-  
-  let rating = (engagement + loyalty + consistency);
-    
+
+  let rating = engagement + loyalty + consistency;
+
   rating = Math.max(0, Math.min(maxRating, rating));
-  
+
   return rating;
 }
 
@@ -65,12 +67,9 @@ function formatVideoCount(videoCount) {
 }
 
 function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  return luxon.DateTime.fromISO(dateString, { zone: 'utc' }).toFormat(
+    'MMMM d, yyyy'
+  );
 }
 
 let allChannels = [];
@@ -413,15 +412,17 @@ async function downloadCSV() {
     const headers = Object.keys(channels[0]);
 
     const csvData = channels.map(channel => {
-      return headers.map(key => {
-        let value = channel[key];
+      return headers
+        .map(key => {
+          let value = channel[key];
 
-        if (typeof value === 'object' && value !== null) {
-          value = JSON.stringify(value);
-        }
+          if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          }
 
-        return `"${String(value).replace(/"/g, '""')}"`;
-      }).join(',');
+          return `"${String(value).replace(/"/g, '""')}"`;
+        })
+        .join(',');
     });
 
     const csvContent = [headers.join(','), ...csvData].join('\n');
