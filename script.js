@@ -25,26 +25,27 @@ function updateUrl() {
 }
 
 function calculateRating(channel) {
-  const subscribers = parseInt(channel.subscriberCount || '0');
-  const views = parseInt(channel.viewCount || '0');
-  const videoCount = parseInt(channel.videoCount || '0');
+  const subscribers = parseInt(
+    channel.apiData?.statistics?.subscriberCount || '0'
+  );
+  const views = parseInt(channel.apiData?.statistics?.viewCount || '0');
+  const videoCount = parseInt(channel.apiData?.statistics?.videoCount || '0');
   const maxRating = 5;
-  
-  if (views === 0 || videoCount === 0 || subscribers === 0) return 0;
-  
+
+  if (views === 0 || videoCount === 0) return 0;
+
   const viewsPerVideo = views / videoCount;
-  const viewsPerSub = views / subscribers;
-  
-  const engagement = Math.min(1, Math.log10(viewsPerVideo + 1) / 6);
-  
-  const reach = Math.min(1, Math.log10(viewsPerSub + 1) / 2);
-  
-  const growth = Math.min(1, Math.log10(subscribers / videoCount + 1) / 4);
-  let rating = (engagement * 0.4) + (reach * 0.35) + (growth * 0.25);
-  
-  rating = rating * maxRating;
+  const subsToViews = subscribers / views;
+  const subsToVideos = subscribers / videoCount;
+
+  const engagement = Math.log10(viewsPerVideo + 1) * 0.5;
+  const loyalty = Math.log10(subsToViews * 1000 + 1) * 2;
+  const consistency = Math.log10(subsToVideos + 1) * 1.5;
+
+  let rating = engagement + loyalty + consistency;
+
   rating = Math.max(0, Math.min(maxRating, rating));
-  
+
   return rating;
 }
 
@@ -114,17 +115,14 @@ async function searchChannels() {
   await fetchChannels(currentPage, searchQuery);
 }
 
-function loadImageWithRetry(imgElement, url, fallbackUrl, retries = 2) {
+function loadImageWithRetry(imgElement, url, retries = 2) {
   imgElement.src = url;
 
   imgElement.onerror = () => {
     if (retries > 0) {
-      setTimeout(
-        () => loadImageWithRetry(imgElement, url, fallbackUrl, retries - 1),
-        10000
-      );
-    } else if (fallbackUrl) {
-      imgElement.src = fallbackUrl;
+      setTimeout(() => loadImageWithRetry(imgElement, url, retries - 1), 10000);
+    } else {
+      imgElement.src = channel.profilePicture;
     }
   };
 }
@@ -139,11 +137,15 @@ function displayChannels(channels) {
     channelBox.onclick = () => showChannelDetails(channel);
 
     const rating = calculateRating(channel);
-    const thumbnailUrl = channel.profilePicture || '';
+    const thumbnailUrl =
+      channel.apiData?.snippet?.thumbnails?.default?.url ||
+      channel.profilePicture;
     const subscriberCount = formatSubscriberCount(
-      channel.subscriberCount || '0'
+      channel.apiData?.statistics?.subscriberCount || '0'
     );
-    const videoCount = formatVideoCount(channel.videoCount || '0');
+    const videoCount = formatVideoCount(
+      channel.apiData?.statistics?.videoCount || '0'
+    );
     const creationDate = formatDate(channel.publishedAt);
 
     let formattedRating =
@@ -172,7 +174,7 @@ function displayChannels(channels) {
 
     container.appendChild(channelBox);
     const imgElement = channelBox.querySelector('.channel-thumbnail');
-    loadImageWithRetry(imgElement, thumbnailUrl, thumbnailUrl);
+    loadImageWithRetry(imgElement, thumbnailUrl);
   });
 
   if (channels.length === 0) {
@@ -184,26 +186,29 @@ function showChannelDetails(channel) {
   const modal = document.getElementById('channel-modal');
   const modalContent = document.getElementById('modal-content-container');
 
-  const subscriberCount = formatSubscriberCount(channel.subscriberCount || '0');
-  const totalViews = formatTotalViews(channel.viewCount || '0');
-  const videoCount = formatVideoCount(channel.videoCount || '0');
+  const subscriberCount = formatSubscriberCount(
+    channel.apiData?.statistics?.subscriberCount || '0'
+  );
+  const totalViews = formatTotalViews(
+    channel.apiData?.statistics?.viewCount || '0'
+  );
+  const videoCount = formatVideoCount(
+    channel.apiData?.statistics?.videoCount || '0'
+  );
   const creationDate = formatDate(channel.publishedAt);
 
-  const channelUrl =
-    channel.url || `https://www.youtube.com/channel/${channel.id}`;
+  const channelUrl = `https://www.youtube.com/channel/${channel.id}`;
 
   modalContent.innerHTML = `
         <div class="modal-header">
-            <img src="${channel.profilePicture || ''}" alt="${channel.title}">
+            <img src="${
+              channel.apiData?.snippet?.thumbnails?.default?.url ||
+              channel.profilePicture
+            }" alt="${channel.title}">
             <div class="modal-header-content">
                 <h2><a href="${channelUrl}" target="_blank">${
     channel.title
   }</a></h2> 
-                ${
-                  channel.handle
-                    ? `<p><strong>Handle:</strong> ${channel.handle}</p>`
-                    : ''
-                }
                 <p><strong>Subscribers:</strong> ${subscriberCount}</p>
                 <p><strong>Total Views:</strong> ${totalViews}</p> 
                 <p><strong>Videos:</strong> ${videoCount}</p>
@@ -211,7 +216,10 @@ function showChannelDetails(channel) {
             </div>
         </div>
         <div class="modal-description">
-            <p>${channel.description || 'No description available.'}</p>
+            <p>${
+              channel.apiData?.snippet?.description ||
+              'No description available.'
+            }</p>
         </div>
         <h3>Recent Videos</h3>
         <div id="recent-videos" class="video-grid">
@@ -240,11 +248,6 @@ async function fetchRecentVideos(channelId) {
 function displayRecentVideos(videos) {
   const recentVideosContainer = document.getElementById('recent-videos');
   recentVideosContainer.innerHTML = '';
-
-  if (!videos || videos.length === 0) {
-    recentVideosContainer.innerHTML = '<p>No recent videos found.</p>';
-    return;
-  }
 
   videos.forEach(video => {
     const videoElement = document.createElement('div');
@@ -312,6 +315,25 @@ function updatePagination(totalPages, currentPage) {
   }
 
   pagination.innerHTML = paginationHTML;
+}
+
+function changePage(page) {
+  currentPage = page;
+  fetchChannels(currentPage);
+}
+
+function changeSort() {
+  currentSort = document.getElementById('sort-options').value;
+  fetchChannels(currentPage);
+}
+
+function jumpToPage() {
+  const pageInput = document.getElementById('page-input').value;
+  const pageNumber = parseInt(pageInput);
+
+  if (!isNaN(pageNumber)) {
+    changePage(pageNumber);
+  }
 }
 
 async function changePage(page) {
