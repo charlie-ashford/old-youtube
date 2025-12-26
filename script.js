@@ -29,21 +29,22 @@ function calculateRating(channel) {
   const views = parseInt(channel.viewCount || '0');
   const videoCount = parseInt(channel.videoCount || '0');
   const maxRating = 5;
-
-  if (views === 0 || videoCount === 0) return 0;
-
+  
+  if (views === 0 || videoCount === 0 || subscribers === 0) return 0;
+  
   const viewsPerVideo = views / videoCount;
-  const subsToViews = subscribers / views;
-  const subsToVideos = subscribers / videoCount;
-
-  const engagement = Math.log10(viewsPerVideo + 1) * 0.5;
-  const loyalty = Math.log10(subsToViews * 1000 + 1) * 2;
-  const consistency = Math.log10(subsToVideos + 1) * 1.5;
-
-  let rating = engagement + loyalty + consistency;
-
+  const viewsPerSub = views / subscribers;
+  
+  const engagement = Math.min(1, Math.log10(viewsPerVideo + 1) / 6);
+  
+  const reach = Math.min(1, Math.log10(viewsPerSub + 1) / 2);
+  
+  const growth = Math.min(1, Math.log10(subscribers / videoCount + 1) / 4);
+  let rating = (engagement * 0.4) + (reach * 0.35) + (growth * 0.25);
+  
+  rating = rating * maxRating;
   rating = Math.max(0, Math.min(maxRating, rating));
-
+  
   return rating;
 }
 
